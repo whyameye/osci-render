@@ -175,6 +175,15 @@ public class ProjectSelectController implements Initializable {
 
   public void setApplicationLauncher(ExceptionBiConsumer<String, Boolean> launchMainApplication) {
     this.launchMainApplication = launchMainApplication;
+
+    try {
+      //launchMainApplication.accept(null, startMutedCheckBox.isSelected());
+      launchMainApplication.accept("/home/user/dev/osci-render/test1.osci", startMutedCheckBox.isSelected());
+
+    } catch (Exception ex) {
+      logger.log(Level.SEVERE, ex.getMessage(), ex);
+    }
+
   }
 
   public void setOpenBrowser(Consumer<String> openBrowser) {

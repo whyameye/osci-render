@@ -1386,8 +1386,8 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
 
       openProjectPath = projectFileName;
       updateTitle(null, projectFileName);
-      addRecentFile.accept(openProjectPath);
-      updateRecentFiles();
+      //addRecentFile.accept(openProjectPath);
+      //updateRecentFiles();
     } catch (Exception e) {
       logger.log(Level.SEVERE, e.getMessage(), e);
     }
@@ -1467,7 +1467,7 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
     if (message != null) {
       title += " - " + message;
     }
-    stage.setTitle(title);
+    //stage.setTitle(title);
   }
 
   public void resetLuaStep() {
@@ -1540,14 +1540,14 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
   }
 
   private void updateRecentFiles() throws Exception {
-    recentProjectMenu.getItems().clear();
+    /*recentProjectMenu.getItems().clear();
     recentProjectMenu.getItems().addAll(
-      recentFiles
-        .call()
-        .stream()
-        .limit(MAX_RECENT_FILES)
-        .map(MenuItem::new)
-        .toList()
+            recentFiles
+                    .call()
+                    .stream()
+                    .limit(MAX_RECENT_FILES)
+                    .map(MenuItem::new)
+                    .toList()
     );
     recentProjectMenu.getItems().forEach(item -> {
       item.setOnAction(e -> {
@@ -1557,7 +1557,7 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
           logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
       });
-    });
+    });*/
   }
 
   private record PrintableSlider(Slider slider) {
