@@ -120,7 +120,9 @@ public class Gui extends Application {
     controller.setRecentFiles(projectSelectController::recentFiles);
 
     controller.setSoftwareOscilloscopeAction(() -> {
-      getHostServices().showDocument("https://james.ball.sh/oscilloscope");
+      //getHostServices().showDocument("https://james.ball.sh/oscilloscope");
+      getHostServices().showDocument("http://localhost:8000/oscilloscope");
+
     });
 
     scene.addEventHandler(KeyEvent.KEY_PRESSED, (event -> {
