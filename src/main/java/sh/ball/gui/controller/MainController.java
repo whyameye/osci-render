@@ -105,7 +105,7 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
   private int midiDeadzone = 5;
 
   // frames
-  private static final InputStream DEFAULT_OBJ = MainController.class.getResourceAsStream("/models/cube.obj");
+  private static final InputStream DEFAULT_OBJ = MainController.class.getResourceAsStream("/models/baby_1000.obj");
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Set<String> unsavedFileNames = new LinkedHashSet<>();
   private List<byte[]> openFiles = new ArrayList<>();
@@ -1231,7 +1231,7 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
       InputStream objClone = new ByteArrayInputStream(baos.toByteArray());
 
       deleteCurrentFile();
-      createFile("cube.obj", objClone.readAllBytes());
+      createFile("baby_1000.obj", objClone.readAllBytes());
       return;
     }
     try {
@@ -1530,6 +1530,7 @@ public class MainController implements Initializable, FrequencyListener, MidiLis
     new Thread(objectServer).start();
 
     webSocketServer = new ByteWebSocketServer();
+    webSocketServer.setReuseAddr(true);
     webSocketServer.start();
     this.buffer = new byte[FRAME_SIZE * SOSCI_NUM_VERTICES * SOSCI_VERTEX_SIZE];
     new Thread(() -> sendAudioDataToWebSocket(webSocketServer)).start();

@@ -228,7 +228,7 @@ public class GeneralController implements Initializable, SubController {
       Map<String, byte[]> defaultFileMap = Map.of(
         ".lua", getClass().getResourceAsStream("/lua/demo.lua").readAllBytes(),
         ".svg", getClass().getResourceAsStream("/svg/demo.svg").readAllBytes(),
-        ".obj", getClass().getResourceAsStream("/models/cube.obj").readAllBytes(),
+        ".obj", getClass().getResourceAsStream("/models/baby_1000.obj").readAllBytes(),
         ".txt", "hello".getBytes(StandardCharsets.UTF_8)
       );
 
