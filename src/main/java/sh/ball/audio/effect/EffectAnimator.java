@@ -64,7 +64,7 @@ public class EffectAnimator extends PhaseEffect implements SettableEffect {
         }
         return effect.apply(count, vector);
       }
-      case SEESAW -> {
+     /* case SEESAW -> {
         double scalar = 10 * Math.max(Math.min(normalisedActualValue, 1 - normalisedActualValue), 0.01);
         double change = range * scalar * SPEED_SCALE * normalisedTargetValue / sampleRate;
         if (actualValue + change > maxValue || actualValue - change < minValue) {
@@ -75,7 +75,7 @@ public class EffectAnimator extends PhaseEffect implements SettableEffect {
         } else {
           actualValue -= change;
         }
-      }
+      }*/
       case LINEAR -> {
         double change = range * SPEED_SCALE * normalisedTargetValue / sampleRate;
         if (actualValue + change > maxValue || actualValue - change < minValue) {
@@ -88,15 +88,17 @@ public class EffectAnimator extends PhaseEffect implements SettableEffect {
         }
       }
       case FORWARD -> {
-        actualValue += range * 0.5 * SPEED_SCALE * normalisedTargetValue / sampleRate;
-        if (actualValue > maxValue) {
-          actualValue = minValue;
+        actualValue += range * 0.5 * 0.01 * SPEED_SCALE * normalisedTargetValue / sampleRate;
+        if (actualValue > (maxValue / 10.0)) {
+          type = AnimationType.REVERSE;
+          //actualValue = minValue;
         }
       }
       case REVERSE -> {
-        actualValue -= range * 0.5 * SPEED_SCALE * normalisedTargetValue / sampleRate;
+        actualValue -= range * 0.5 * 0.01 * SPEED_SCALE * normalisedTargetValue / sampleRate;
         if (actualValue < minValue) {
-          actualValue = maxValue;
+          type = AnimationType.FORWARD;
+          //actualValue = maxValue / 10.0;
         }
       }
     }
