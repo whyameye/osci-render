@@ -178,7 +178,8 @@ public class ProjectSelectController implements Initializable {
 
     try {
       //launchMainApplication.accept(null, startMutedCheckBox.isSelected());
-      launchMainApplication.accept("/home/user/dev/osci-render/test1.osci", startMutedCheckBox.isSelected());
+      //launchMainApplication.accept("/home/user/dev/osci-render/test1.osci", startMutedCheckBox.isSelected());
+      launchMainApplication.accept("/tmp/test1.osci", startMutedCheckBox.isSelected());
 
     } catch (Exception ex) {
       logger.log(Level.SEVERE, ex.getMessage(), ex);
