@@ -1,3 +1,7 @@
+# HACKED UP VERSION
+
+This version was used for an art installation and is not intended for any other use.
+
 <p align="center">
   <img width="267" height="256" src="osci.png" />
 </p>
