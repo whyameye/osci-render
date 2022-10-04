@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>sosci</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="Description" content="Software oscilloscope for osci-render">
+<script src="js/woscope.js"></script>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="mask-icon" href="safari-pinned-tab.svg" color="#333333">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+<meta name="msapplication-TileColor" content="#2b5797">
+<meta name="theme-color" content="#333333">
+</head>
+<body onresize="resize_canvas()">
+  <canvas id="sosci"></canvas>
+<div style="display:none">
+<label for="intensity">beam intensity</label>
+<input id="intensity" name="intensity" type="range" min="0" max="1" value="1.00" step="0.01">
+</div>
+<div style="display:none">
+<label for="hue">hue</label>
+<input id="hue" name="hue" type="range" min="0" max="0.8" value="0.35" step="0.01">
+</div>
+<style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      color: white;
+      font-family: 'Fira Code', monospace;
+    }
+
+    label,
+    input {
+      z-index: 1;
+      position: relative;
+    }
+
+    canvas {
+      padding: 0;
+      margin: auto;
+      display: block;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+    }
+  </style>
+<script>
+    const canvas = document.getElementById("sosci");
+    const intensity = document.getElementById("intensity");
+    const hue = document.getElementById("hue");
+
+  let socket = new WebSocket("ws://172.16.1.30:9004");
+
+socket.onopen = function(e) {
+  console.log("[open] Connection established");
+};
+
+  socket.onmessage = function(event) {
+    hue.value = parseFloat(event.data);
+};
+
+socket.onclose = function(event) {
+  if (event.wasClean) {
+    console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+  } else {
+    // e.g. server process killed or network down
+    // event.code is usually 1006 in this case
+    console.log('[close] Connection died');
+  }
+};
+
+socket.onerror = function(error) {
+  console.log(`[error] ${error.message}`);
+};
+  
+    function resize_canvas() {
+      const dim = Math.min(window.innerWidth, window.innerHeight);
+      canvas.width = dim;
+      canvas.height = dim;
+    }
+
+    function HSVtoRGB(h, s, v) {
+      var r, g, b, i, f, p, q, t;
+      if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+      }
+      i = Math.floor(h * 6);
+      f = h * 6 - i;
+      p = v * (1 - s);
+      q = v * (1 - f * s);
+      t = v * (1 - (1 - f) * s);
+      switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+      }
+      return [r, g, b, 1];
+    }
+
+    resize_canvas();
+
+    woscope({
+      canvas: canvas,
+      callback: function () { },
+      intensityCallback: function () {
+        return intensity.value;
+      },
+      colorCallback: function () {
+        return HSVtoRGB(hue.value, 1, 0.5);
+      },
+      error: function (msg) {
+        console.log('woscope error:', msg);
+      }
+    });
+
+
+  </script>
+</body>
+</html>
